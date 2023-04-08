@@ -9,6 +9,7 @@
 name: Run RSS Sync
 
 on:
+  workflow_dispatch:
   schedule:
     - cron:  '0 8,20 * * *'
 
