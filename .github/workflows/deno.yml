@@ -30,4 +30,8 @@ jobs:
           deno-version: v1.x
 
       - name: Run task
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          NOTION_BOOK_DATABASE_ID: ${{ secrets.NOTION_BOOK_DATABASE_ID }}
+          DOUBAN_USER_ID: ${{ secrets.DOUBAN_USER_ID }}
         run: deno task start
