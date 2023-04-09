@@ -2,7 +2,7 @@
 
 ## Introduction
 **Use douban' rss source to sync book reading status to the database of notion, this is increasing update, the status includes reading and wanna read, read.**
-
+![](/assets/screenshot_showcase.png)
 ## How to Use
 1. **Goto your douban homepage, Write down your douban's ID, We can use it soon.**
   ![](/assets/screenshot_doban_user_id.png)
