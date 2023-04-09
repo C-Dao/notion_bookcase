@@ -15,8 +15,8 @@
 5. **Git clone the repo. Yes, the repo is me.**
 6. **Setting git repo secrets, add NOTION_TOKEN(step 4) and NOTION_BOOK_DATABASE_ID(step 3), DOUBAN_USER_ID（step 1）**
 ![](assets/screenshot_add_secrets.png)
-7. **Finnaly, schedule git actions. You can update workflow config to change schedule**
-
+7. **First Sync, You can run sync_full action to full sync your douban's book data**
+8. **Finnaly, schedule sync_rss actions. You can update workflow config to change schedule**
 
 ## Credits
 **Thanks bambooom's [douban-backup](https://github.com/bambooom/douban-backup)**

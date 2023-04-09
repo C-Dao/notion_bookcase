@@ -35,9 +35,9 @@ export function notionParser(
 export function getProperty(item: any, key: string): any {
   switch (key) {
     case "title":
-      return item?.[0]?.text.content || null;
+      return item?.title?.[0]?.text.content || null;
     case "files":
-      return item?.[0]?.external.url || null;
+      return item?.files?.[0]?.external.url || null;
     case "date":
       return item.date.start || null;
     case "multi_select":
@@ -204,6 +204,7 @@ export async function queryBooks(ids: string[]) {
     }
     return slice;
   })();
+
   const res = await Promise.all(sliceIds.map((slice) =>
     notion.databases.query({
       database_id: NOTION_BOOK_DATABASE_ID || "",

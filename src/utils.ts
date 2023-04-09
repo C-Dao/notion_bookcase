@@ -21,6 +21,6 @@ export function getNextValidContent(content: Node) {
 }
 
 export function getIDFromURL(url?: string): string {
-  const [id] = url?.match(/(\/subject\/?<=)\d+(?=\/)?/) || [""];
+  const [id] = url?.match(/(?<=\/subject\/)\d+(?=\/)?/) || [""];
   return id;
 }

@@ -5,7 +5,12 @@ import { DOMParser } from "deno_dom";
 import { FeedEntry } from "rss/feed";
 import { htmlParser } from "./book_fetch.ts";
 import { createPage, queryBooks, updatePage } from "./notion_api.ts";
-import { DB_PROPERTIES,RATING_TEXT,DOUBAN_USER_ID,NOTION_BOOK_DATABASE_ID } from "./constants.ts";
+import {
+  DB_PROPERTIES,
+  DOUBAN_USER_ID,
+  NOTION_BOOK_DATABASE_ID,
+  RATING_TEXT,
+} from "./constants.ts";
 import { BookItem } from "./type.ts";
 import { getIDFromURL } from "./utils.ts";
 
@@ -79,6 +84,7 @@ feedsData.forEach((feed) => {
   }) || {};
 
   const updatedFeed = Object.assign({}, originFeed, feed);
+
   if (updatedFeed.page_id) {
     updatePage(updatedFeed);
   } else {
