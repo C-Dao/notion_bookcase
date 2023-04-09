@@ -1,6 +1,17 @@
 {
   "tasks": {
-    "dev": "deno run -A --watch main.ts",
-    "start": "deno run -A main.ts"
+    "dev": "deno run -A --watch sync_rss.ts",
+    "start": "deno run -A sync_rss.ts",
+    "start:full": "deno run -A sync_full.ts",
+    "dev:full": "deno run -A --watch sync_full.ts"
+  },
+  "imports": {
+    "dotenv/load": "https://deno.land/std@0.182.0/dotenv/load.ts",
+    "rss": "https://deno.land/x/rss@0.5.8/mod.ts",
+    "rss/feed": "https://deno.land/x/rss@0.5.8/src/types/feed.ts",
+    "deno_dom": "https://deno.land/x/deno_dom@v0.1.38/deno-dom-wasm.ts",
+    "dayjs": "npm:dayjs@1.11.7",
+    "notion_sdk/client": "https://deno.land/x/notion_sdk@v2.2.3/src/Client.ts",
+    "notion_sdk/api_endpoints": "https://deno.land/x/notion_sdk@v2.2.3/src/api-endpoints.ts"
   }
 }
