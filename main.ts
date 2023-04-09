@@ -56,7 +56,7 @@ enum RATING_TEXT {
   力荐 = "⭐⭐⭐⭐⭐",
 }
 
-const StatusRegExp = /^(想读|在读|读过)/;
+const StatusRegExp = /^想读|(?<=最近)在读|读过/;
 
 enum EMOJI {
   在读 = "📖",
@@ -80,8 +80,8 @@ function getIDFromURL(url?: string): string {
 }
 
 function getStatusFromTitle(title?: string): string {
-  const [, id] = title?.match(StatusRegExp) || [];
-  return id;
+  const [status] = title?.match(StatusRegExp) || [""];
+  return status;
 }
 
 function getNextElementSibling(content: Node) {
