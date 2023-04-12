@@ -195,17 +195,18 @@ export async function updatePage(item: BookItem) {
 }
 
 export async function queryBooks(ids: string[]) {
-  const sliceIds = (() => {
+  const validIDs = ids.filter(id => !!id.trim());
+  const sliceIDs = (() => {
     let slice = [];
     let end = 0;
-    while (end < ids.length) {
-      slice.push(ids.slice(end, 100));
+    while (end < validIDs.length) {
+      slice.push(validIDs.slice(end, 100));
       end += 100;
     }
     return slice;
   })();
 
-  const res = await Promise.all(sliceIds.map((slice) =>
+  const res = await Promise.all(sliceIDs.map((slice) =>
     notion.databases.query({
       database_id: NOTION_BOOK_DATABASE_ID || "",
       filter: {
