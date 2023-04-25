@@ -28,9 +28,9 @@ Use douban's rss source to sync book reading status to the database of notion, t
   <img width='70%' src='/assets/screenshot_doban_user_id.png'/>
 
 - Setting secrets for git actions. Add following secrets to your repository actions configuration.
-    - NOTION_TOKEN ([STEP 2](#2-creating-a-notion-integretion-bot-and-copy-the-notion-integration-token-learn-more))
-    - NOTION_BOOK_DATABASE_ID ([STEP 5](#5-copy-the-cloned-templates-database-id-please-save-it-we-will-use-it-soon-learn-more)) 
-    - DOUBAN_USER_ID ([STEP 6](#6-goto-your-douban-homepage-copy-your-doubans-id-please-save-it-we-will-use-it-soon)) 
+    - NOTION_TOKEN
+    - NOTION_BOOK_DATABASE_ID
+    - DOUBAN_USER_ID
     
   <img width='70%' src='/assets/screenshot_add_secrets.png'/>
 
