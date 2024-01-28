@@ -38,5 +38,5 @@ jobs:
         env:
           NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
           NOTION_BOOK_DATABASE_ID: ${{ secrets.NOTION_BOOK_DATABASE_ID }}
-          DOUBAN_USER_ID: ${{ secrets.GOODREADS_USER_ID }}
+          GOODREADS_USER_ID: ${{ secrets.GOODREADS_USER_ID }}
         run: deno task start:goodreads:full
