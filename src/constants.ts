@@ -48,10 +48,21 @@ export enum RATING_TEXT_FULL {
   "rating5-t" = "⭐⭐⭐⭐⭐",
 }
 
+export enum RATING_TEXT_GOODREADS {
+  "did not like it" = "⭐",
+  "it was ok" = "⭐⭐",
+  "liked it" = "⭐⭐⭐",
+  "really liked it" = "⭐⭐⭐⭐",
+  "it was amazing" = "⭐⭐⭐⭐⭐",
+}
+
 export enum STATUS {
   collect = "读过",
   do = "在读",
   wish = "想读",
+  read = "读过",
+  "currently-reading" = "在读",
+  "to-read" = "想读",
 }
 
 export enum EMOJI {
@@ -60,6 +71,11 @@ export enum EMOJI {
   想读 = "🔖",
 }
 
+export const USER_AGENT =
+  "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) " +
+  "Chrome/111.0.0.0 Safari/537.36 Edg/111.0.1661.62";
+
 export const DOUBAN_USER_ID = Deno.env.get("DOUBAN_USER_ID");
 export const NOTION_TOKEN = Deno.env.get("NOTION_TOKEN");
 export const NOTION_BOOK_DATABASE_ID = Deno.env.get("NOTION_BOOK_DATABASE_ID");
+export const GOODREADS_USER_ID = Deno.env.get("GOODREADS_USER_ID");

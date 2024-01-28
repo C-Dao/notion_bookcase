@@ -10,8 +10,8 @@ import {
   NOTION_BOOK_DATABASE_ID,
   NOTION_TOKEN,
   PropertyType,
-} from "./constants.ts";
-import { BookItem } from "./type.ts";
+} from "../constants.ts";
+import { BookItem } from "../types.ts";
 
 export const notion = new Client({
   auth: NOTION_TOKEN,
@@ -26,34 +26,71 @@ export function notionParser(
   ) as (keyof typeof DB_PROPERTIES)[];
 
   keys.forEach((key) => {
-    data[key] = getProperty(item.properties[key], PropertyType[key]);
+    data[key] = getProperty(item.properties, key);
   });
 
   return data;
 }
 
-export function getProperty(item: any, key: string): any {
-  switch (key) {
+export function getProperty(
+  item: PageObjectResponse["properties"],
+  key: keyof typeof DB_PROPERTIES,
+) {
+  const property = PropertyType[key];
+  const propertyItem = item[key];
+
+  switch (property) {
     case "title":
-      return item?.title?.[0]?.text.content || null;
+      if ("title" === propertyItem.type) {
+        if (propertyItem?.title?.[0].type === "text") {
+          return propertyItem?.title?.[0]?.text?.content || null;
+        }
+      }
+      break;
     case "files":
-      return item?.files?.[0]?.external.url || null;
+      if ("files" === propertyItem.type) {
+        if (propertyItem?.files?.[0].type === "external") {
+          return propertyItem?.files?.[0]?.external.url || null;
+        }
+      }
+      break;
     case "date":
-      return item.date.start || null;
+      if ("date" === propertyItem.type) {
+        return propertyItem.date?.start || null;
+      }
+      break;
     case "multi_select":
-      return item.multi_select[0]?.name || null;
+      if ("multi_select" === propertyItem.type) {
+        return propertyItem.multi_select[0]?.name || null;
+      }
+      break;
     case "rich_text":
-      return item.rich_text[0]?.text?.content || null;
+      if ("rich_text" === propertyItem.type) {
+        if (propertyItem?.rich_text?.[0]?.type === "text") {
+          return propertyItem.rich_text[0]?.text?.content || null;
+        }
+      }
+      break;
     case "number":
-      return item.number || null;
+      if ("number" === propertyItem.type) {
+        return propertyItem.number || null;
+      }
+      break;
     case "url":
-      return item.url || null;
+      if ("url" === propertyItem.type) {
+        return propertyItem.url || null;
+      }
+      break;
     default:
       return null;
   }
+  return null;
 }
 
-export function setProperty(val: any, key: string): any {
+export function setProperty(
+  val: string | null | number | undefined,
+  key: string,
+) {
   if (val === null || val === undefined) return null;
 
   switch (key) {
@@ -70,7 +107,7 @@ export function setProperty(val: any, key: string): any {
     case "files":
       return {
         "files": [{
-          "name": val,
+          "name": typeof val == "string" ? val?.slice(0, 100) : val,
           "external": {
             "url": val,
           },
@@ -115,16 +152,16 @@ export function setProperty(val: any, key: string): any {
   }
 }
 
-export function deleteUnusedProperties(properties: any) {
+export function deleteUnusedProperties(properties: BookItem) {
   Object.keys(DB_PROPERTIES).map((key) => {
-    if (properties[key] === null) {
-      delete properties[key];
+    if (properties[key as unknown as DB_PROPERTIES] === null) {
+      delete properties[key as unknown as DB_PROPERTIES];
     }
   });
 }
 
 export async function createPage(item: BookItem) {
-  const data: any = {
+  const data = {
     parent: {
       database_id: NOTION_BOOK_DATABASE_ID,
     },
@@ -194,10 +231,13 @@ export async function updatePage(item: BookItem) {
   await notion.pages.update(data as UpdatePageParameters);
 }
 
-export async function queryBooks(ids: string[]) {
-  const validIDs = ids.filter(id => !!id.trim());
+export async function queryBooks(
+  ids: string[],
+  domain: "goodreads" | "douban",
+) {
+  const validIDs = ids.filter((id) => !!id.trim());
   const sliceIDs = (() => {
-    let slice = [];
+    const slice: string[][] = [];
     let end = 0;
     while (end < validIDs.length) {
       slice.push(validIDs.slice(end, 100));
@@ -211,10 +251,20 @@ export async function queryBooks(ids: string[]) {
       database_id: NOTION_BOOK_DATABASE_ID || "",
       filter: {
         or: slice.map((id) => ({
-          property: DB_PROPERTIES.条目链接,
-          url: {
-            contains: id,
-          },
+          and: [
+            {
+              property: DB_PROPERTIES.条目链接,
+              url: {
+                contains: domain,
+              },
+            },
+            {
+              property: DB_PROPERTIES.条目链接,
+              url: {
+                contains: id,
+              },
+            },
+          ],
         })),
       },
     }).then((data) => {

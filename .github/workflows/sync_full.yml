@@ -28,9 +28,16 @@ jobs:
         with:
           deno-version: v1.x
 
-      - name: Run task
+      - name: Run Douban sync task
         env:
           NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
           NOTION_BOOK_DATABASE_ID: ${{ secrets.NOTION_BOOK_DATABASE_ID }}
           DOUBAN_USER_ID: ${{ secrets.DOUBAN_USER_ID }}
-        run: deno task start:full
+        run: deno task start:douban:full
+
+      - name: Run Goodreads sync task
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          NOTION_BOOK_DATABASE_ID: ${{ secrets.NOTION_BOOK_DATABASE_ID }}
+          DOUBAN_USER_ID: ${{ secrets.GOODREADS_USER_ID }}
+        run: deno task start:goodreads:full

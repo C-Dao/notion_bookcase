@@ -1,9 +1,9 @@
 {
   "tasks": {
-    "dev": "deno run -A --watch src/sync_rss.ts",
-    "start": "deno run -A src/sync_rss.ts",
-    "start:full": "deno run -A src/sync_full.ts",
-    "dev:full": "deno run -A --watch src/sync_full.ts"
+    "start:douban:rss": "deno run -A src/sync_douban_rss.ts",
+    "start:dounan:full": "deno run -A src/sync_douban_full.ts",
+    "start:goodreads:full": "deno run -A src/sync_goodreads_full.ts",
+    "start:goodreads:part": "deno run -A src/sync_goodreads_part.ts"
   },
   "imports": {
     "dotenv/load": "https://deno.land/std@0.182.0/dotenv/load.ts",

@@ -24,3 +24,23 @@ export function getIDFromURL(url?: string): string {
   const [id] = url?.match(/(?<=\/subject\/)\d+(?=\/)?/) || [""];
   return id;
 }
+
+export function getIDFromURLForGoodReads(url?: string): string {
+  const [id] = url?.match(/(?<=\/book\/show\/)\d+(?=[-.])?/) || [""];
+  return id;
+}
+
+export function templateURL(
+  spans: TemplateStringsArray,
+  ...keys: (string | number)[]
+) {
+  return (...args: unknown[]) => {
+    const dicts: Record<string, string | number> =
+      args[args.length - 1] as Record<string, string | number>;
+    return spans[0] + keys.map((key, index) => {
+      return Number.isInteger(key)
+        ? args[key as number] + spans[index + 1]
+        : key + "=" + dicts[key] + spans[index + 1];
+    }).join("");
+  };
+}

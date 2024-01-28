@@ -3,15 +3,15 @@ import dayjs from "npm:dayjs@1.11.7";
 import { parseFeed } from "rss";
 import { DOMParser } from "deno_dom";
 import { FeedEntry } from "rss/feed";
-import { htmlParser } from "./book_fetch.ts";
-import { createPage, queryBooks, updatePage } from "./notion_api.ts";
+import { htmlParser } from "./apis/douban_api.ts";
+import { createPage, queryBooks, updatePage } from "./apis/notion_api.ts";
 import {
   DB_PROPERTIES,
   DOUBAN_USER_ID,
   NOTION_BOOK_DATABASE_ID,
   RATING_TEXT,
 } from "./constants.ts";
-import { BookItem } from "./type.ts";
+import { BookItem } from "./types.ts";
 import { getIDFromURL } from "./utils.ts";
 
 function getStatusFromTitle(title?: string): string {
@@ -70,17 +70,31 @@ if (!NOTION_BOOK_DATABASE_ID) {
 }
 
 await Promise.all(feedsData.map(async (item) => {
-  Object.assign(item, await htmlParser(item[DB_PROPERTIES.条目链接]));
+  if (typeof item?.[DB_PROPERTIES.条目链接] == "string") {
+    Object.assign(item, await htmlParser(item[DB_PROPERTIES.条目链接]));
+  }
 }));
 
 const feedsInDatabase = await queryBooks(
-  feedsData.map((feed) => getIDFromURL(feed[DB_PROPERTIES.条目链接]) || ""),
+  feedsData.map((feed) => {
+    if (typeof feed?.[DB_PROPERTIES.条目链接] == "string") {
+      return getIDFromURL(feed[DB_PROPERTIES.条目链接]);
+    } else return "";
+  }),
+  "douban",
 );
 
 feedsData.forEach((feed) => {
   const originFeed = feedsInDatabase.find((item) => {
-    return getIDFromURL(item?.[DB_PROPERTIES.条目链接]) ===
-      getIDFromURL(feed?.[DB_PROPERTIES.条目链接]);
+    if (
+      typeof feed?.[DB_PROPERTIES.条目链接] == "string" &&
+      typeof item?.[DB_PROPERTIES.条目链接] == "string"
+    ) {
+      return getIDFromURL(item?.[DB_PROPERTIES.条目链接]) ===
+        getIDFromURL(feed?.[DB_PROPERTIES.条目链接]);
+    } else {
+      return false;
+    }
   }) || {};
 
   const updatedFeed = Object.assign({}, originFeed, feed);

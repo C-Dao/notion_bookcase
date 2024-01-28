@@ -11,7 +11,7 @@ name: sync_rss
 on:
   workflow_dispatch:
   schedule:
-    - cron:  '0 8,20 * * *'
+    - cron: "0 8,20 * * *"
 
 permissions:
   contents: read
@@ -30,9 +30,16 @@ jobs:
         with:
           deno-version: v1.x
 
-      - name: Run task
+      - name: Run Douban sync task
         env:
           NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
           NOTION_BOOK_DATABASE_ID: ${{ secrets.NOTION_BOOK_DATABASE_ID }}
           DOUBAN_USER_ID: ${{ secrets.DOUBAN_USER_ID }}
-        run: deno task start
+        run: deno task start:douban:rss
+
+      - name: Run Goodreads sync task
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          NOTION_BOOK_DATABASE_ID: ${{ secrets.NOTION_BOOK_DATABASE_ID }}
+          DOUBAN_USER_ID: ${{ secrets.GOODREADS_USER_ID }}
+        run: deno task start:goodreads:part
