@@ -1,4 +1,4 @@
-# douban_book_to_notion
+# book_shelf_with_notion
 
 ## New Features ! !
 
@@ -7,8 +7,9 @@
 
 ## Introduction
 
-Use douban's rss source to sync book reading status to the database of notion,
-this is increasing update, the status includes reading and wanna read, read.
+- Use douban rss source to sync book reading status.
+- Use douban page crawler to sync book reading status.
+- Use goodreads page crawler to sync book reading status.
 
 ## Showcase
 
