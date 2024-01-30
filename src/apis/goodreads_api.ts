@@ -13,7 +13,7 @@ import { getIDFromURLForGoodReads, templateURL } from "../utils.ts";
 import dayjs from "npm:dayjs@1.11.7";
 
 const bookURL =
-  templateURL`http://www.goodreads.com/review/list/${0}?${"shelf"}&${"page"}`;
+  templateURL`http://www.goodreads.com/review/list/${0}?${"shelf"}&${"page"}&sort=date_updated&order=d`;
 
 export async function fetchBookItems(
   shelf: GoodReadsBookType,
@@ -44,6 +44,10 @@ export async function fetchBookItems(
       `#booksBody tr:nth-of-type(${index + 1}) > td.date_pub div`,
     );
 
+    const pubDateEdtionElm = dom.querySelector(
+      `#booksBody tr:nth-of-type(${index + 1}) > td.date_pub_edition div`,
+    );
+
     const ratingElm = dom.querySelector(
       `#booksBody tr:nth-of-type(${index + 1}) > td.rating span.notranslate`,
     );
@@ -65,19 +69,15 @@ export async function fetchBookItems(
     );
 
     const dataStartElm = dom.querySelector(
-      `#booksBody tr:nth-of-type(${
-        index + 1
-      }) > td.date_read span.date_started_value`,
+      `#booksBody tr:nth-of-type(${index + 1}) > td.date_started span`,
     );
 
     const dataReadElm = dom.querySelector(
-      `#booksBody tr:nth-of-type(${
-        index + 1
-      }) > td.date_read span.date_read_value`,
+      `#booksBody tr:nth-of-type(${index + 1}) > td.date_read span`,
     );
 
     const dataAddElm = dom.querySelector(
-      `#booksBody tr:nth-of-type(${index + 1}) > td.date_read span`,
+      `#booksBody tr:nth-of-type(${index + 1}) > td.date_added span`,
     );
 
     const link = `https://www.goodreads.com${
@@ -96,12 +96,16 @@ export async function fetchBookItems(
     const isbn = isbn13Elm?.textContent.trim();
     const pubDate = dayjs(pubDateElm?.textContent.trim()).isValid()
       ? dayjs(pubDateElm?.textContent.trim()).format("YYYY-MM-DD")
+      : dayjs(pubDateEdtionElm?.textContent.trim()).isValid()
+      ? dayjs(pubDateEdtionElm?.textContent.trim()).format("YYYY-MM-DD")
       : undefined;
     const review = reviewElm?.textContent.trim();
-    const markDate = dayjs(readDate || startDate || addDate).isValid()
-      ? dayjs(readDate || startDate || addDate).format(
-        "YYYY-MM-DD",
-      )
+    const markDate = dayjs(readDate).isValid()
+      ? dayjs(readDate).format("YYYY-MM-DD")
+      : dayjs(startDate).isValid()
+      ? dayjs(startDate).format("YYYY-MM-DD")
+      : dayjs(addDate).isValid()
+      ? dayjs(addDate).format("YYYY-MM-DD")
       : undefined;
     const data = {
       [DB_PROPERTIES.条目链接]: link,

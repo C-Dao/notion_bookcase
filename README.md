@@ -1,15 +1,15 @@
-# book_shelf_with_notion
+# notion_bookcase
 
 ## New Features ! !
 
-- 🥳 Support Sync Source from [Goodreads](https://www.goodreads.com)
-- 🥳 Support Sync Source from [Douban](https://www.douban.com)
+- [x] 🥳 Support Sync Source from [Goodreads](https://www.goodreads.com)
+- [x] 🥳 Support Sync Source from [Douban](https://www.douban.com)
 
 ## Introduction
 
-- Use douban rss source to sync book reading status.
-- Use douban page crawler to sync book reading status.
-- Use goodreads page crawler to sync book reading status.
+- [x] Use douban rss source to sync book reading status.
+- [x] Use douban page crawler to sync book reading status.
+- [x] Use goodreads page crawler to sync book reading status.
 
 ## Showcase
 
